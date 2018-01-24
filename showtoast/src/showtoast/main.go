@@ -64,17 +64,7 @@ void _unlockJNI() {
 	(*current_vm)->DetachCurrentThread(current_vm);
 }
 
-void loadClass(JNIEnv* env, const char* cls) {
-	jclass current_ctx_clazz = (*env)->GetObjectClass(env, current_ctx);
-	jmethodID getClassLoader = (*env)->GetMethodID(env, current_ctx, "getClassLoader", "()Ljava/lang/ClassLoader;");
-	jobject loader = (*env)->CallObjectMethod(env, current_ctx, getClassLoader);
-	jmethodID loadClass = (*env)->GetMethodID(env, loader, "loadClass", "()Ljava/lang/Class;");
-	jstring className = (*env)->NewStringUTF(env, cls);
-	(*env)->CallObjectMethod(env, loader, loadClass, className);
-}
-
 void showToast(JNIEnv* env) {
-	loadClass(env, "com.example.tenntenn.showtoast.Toastviewer");
 	jclass clazz = (*env)->FindClass(env, "com/example/tenntenn/showtoast/ToastViewer");
     jmethodID methodShow = (*env)->GetStaticMethodID(env, clazz, "showToast", "(Landroid/app/Activity)V");
     if (methodShow == NULL) {
